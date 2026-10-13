@@ -1,0 +1,135 @@
+﻿<!-- הגדרת המסמך כדף אינטרנט בתקן HTML5 -->
+<!doctype html>
+<!-- תגית השורש של הדף: הגדרת שפת המסמך לעברית (he) וכיוון הפריסה מימין לשמאל (rtl) -->
+<html lang="he" dir="rtl">
+<head>
+    <!-- הגדרת קידוד תווים אוניברסלי (UTF-8) לתמיכה מלאה בעברית -->
+    <meta charset="utf-8" />
+
+    <!-- כותרת הדף שמופיעה בלשונית (Tab) של הדפדפן -->
+    <title>Asia Planner</title>
+
+    <!-- הגדרת אייקון האתר (Favicon) שמוצג בלשונית הדפדפן ליד כותרת הדף -->
+    <link rel="icon" href="images/logo.png" />
+
+    <!-- התאמת תצוגת העמוד לרוחב המסך ואפשרות להגדלת התצוגה (Zoom) עבור נגישות -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- קישור לקובץ העיצוב החיצוני (CSS) הנמצא בתיקיית styles -->
+    <link href="styles/myStyle.css" rel="stylesheet" />
+
+    <!-- קישור לקובץ הלוגיקה והפונקציות (JavaScript) הנמצא בתיקיית jScripts -->
+    <script src="jScripts/JavaScript.js" type="text/javascript"></script>
+</head>
+
+<body>
+<!-- תגית סמנטית ראשית העוטפת את כל התוכן המרכזי בדף ומשמשת כקופסה הראשית (Container) -->
+<main>
+    <!-- הכותרת הראשית של הדף (h1 יחיד בדף לפי כללי הסמנטיקה) -->
+    <h1>תכנון טיול לאסיה הרחוקה</h1>
+
+    <!-- תגית הטופס: onsubmit="return false;" מונע רענון אוטומטי של הדף אם המשתמש לוחץ על Enter -->
+    <form onsubmit="return false;">
+        <!-- שדה מוסתר לשמירת כתובת מייל (חלק מתבנית הטופס הבסיסית של הקורס) -->
+        <input type="hidden" id="myEmail" name="name" value="yourMail@gmail.com">
+
+        <!-- מיכל חלק עליון: עוטף את שני הטורים הצפים (שדות הטקסט מימין ואפשרויות הבחירה משמאל) -->
+        <div id="topSection">
+
+            <!-- טור ימני (צף לימין ב-CSS): מכיל את שדות הטקסט, המספרים ואזור הודעות השגיאה -->
+            <div id="textFieldsArea">
+                <!-- תווית המקושרת לשדה השם באמצעות המאפיין for התואם ל-id של השדה (לנגישות) -->
+                <label for="trvName">שם המטייל/ת:</label>
+                <!-- שדה טקסט לשם המטייל: 
+                     placeholder - מציג טקסט דוגמה שנעלם בהקלדה
+                     onchange="tripPlan()" - מפעיל בדיקת תקינות כשהמשתמש מסיים להקליד ויוצא מהשדה
+                     oninput="updateTitle()" - מעדכן בזמן אמת (בכל הקלדת אות) את השם בכותרת התצוגה המקדימה למטה
+                     required - מגדיר את השדה כשדה חובה -->
+                <input type="text" id="trvName" placeholder="לדוגמא: מאיר" onchange="tripPlan()" oninput="updateTitle()" required/>
+                <br><br>
+
+                <!-- תווית ושדה טקסט להזנת מדינת היעד, מפעיל את פונקציית הבדיקה tripPlan() ביציאה מהשדה -->
+                <label for="place">מדינת יעד:</label>
+                <input type="text" id="place" placeholder="לדוגמא: יפן" onchange="tripPlan()" required/>
+                <br><br>
+
+                <!-- תווית ושדה מספרי (type="number") להזנת התקציב:
+                     min="1" - מונע בחירה של מספרים שליליים או אפס דרך חצי השדה
+                     onchange="tripPlan()" - מריץ את בדיקת התקינות בעת שינוי הערך -->
+                <label for="budget">תקציב בדולרים:</label>
+                <input type="number" id="budget" placeholder="לדוגמא: 200" min="1" onchange="tripPlan()" required/>
+
+                <!-- אזור ייעודי להצגת הודעות שגיאה למשתמש (ריק בהתחלה, מתמלא דינמית על ידי פונקציית DataChecking ב-JS) -->
+                <div id="feedback"></div>
+            </div>
+
+            <!-- טור שמאלי (צף לשמאל ב-CSS): מכיל את כפתורי הרדיו ותיבות הסימון -->
+            <div id="optionsArea">
+
+                <!-- מסגרת קבוצה ראשונה (fieldset): בחירת סגנון טיול באמצעות כפתורי רדיו (בחירה יחידה) -->
+                <fieldset>
+                    <!-- כותרת מסגרת הקבוצה -->
+                    <legend>בחרו סגנון טיול:</legend>
+
+                    <!-- כפתורי רדיו: לכולם מוגדר אותו name="tripStyle" כדי להבטיח שניתן לבחור רק אפשרות אחת מתוך השלוש.
+                         לחיצה (onclick) מפעילה את הפונקציה updateTripStyleImage() שמחליפה את התמונה בחלון התצוגה המקדימה ובודקת תקינות -->
+                    <input type="radio" id="backpack" name="tripStyle" onclick="updateTripStyleImage('backpack')">
+                    <label for="backpack">טיול תרמילאים</label><br>
+
+                    <input type="radio" id="Balanced" name="tripStyle" onclick="updateTripStyleImage('Balanced')">
+                    <label for="Balanced">טיול עם תקציב מאוזן</label><br>
+
+                    <input type="radio" id="luxury" name="tripStyle" onclick="updateTripStyleImage('luxury')">
+                    <label for="luxury">טיול יוקרה</label><br>
+                </fieldset>
+
+                <!-- מסגרת קבוצה שנייה (fieldset): בחירת חוויות לטיול באמצעות תיבות סימון (Checkboxes - בחירה מרובה) -->
+                <fieldset>
+                    <!-- כותרת מסגרת הקבוצה -->
+                    <legend>בחרו חוויות לטיול:</legend>
+
+                    <!-- תיבות סימון (checkbox): כל שינוי (onchange) מפעיל את הפונקציה toggleCheckboxVisual()
+                         ומעביר לה שני פרמטרים: ה-id של הצ'ק-בוקס וה-id של התמונה המתאימה לו, כדי לשנות את שקיפות התמונה בין 0.3 ל-1 -->
+                    <input type="checkbox" id="trekking" name="attractions" onchange="toggleCheckboxVisual('trekking', 'imgTrekking')">
+                    <label for="trekking">טרקים וטבע</label><br>
+
+                    <input type="checkbox" id="sea" name="attractions" onchange="toggleCheckboxVisual('sea', 'imgSea')">
+                    <label for="sea">סטלבט בים</label><br>
+
+                    <input type="checkbox" id="city" name="attractions" onchange="toggleCheckboxVisual('city', 'imgCity')">
+                    <label for="city">סיורים בעיר ובמקדשים</label>
+                </fieldset>
+            </div>
+
+        </div>
+
+        <!-- כפתור שליחת הטופס:
+             disabled - הכפתור נעול/אפור כברירת מחדל בטעינת הדף, ונפתח רק כשכל השדות וכפתורי הרדיו תקינים
+             onclick="showTripSummary()" - בלחיצה מפעיל את הפונקציה שמייצרת ומציגה את חלון סיכום ההזמנה -->
+        <input type="button" id="submitBtn" value="שלח" onclick="showTripSummary()" disabled>
+    </form>
+
+    <!-- חלק תחתון: חלון התצוגה המקדימה (מתעדכן בזמן אמת תוך כדי מילוי הטופס) -->
+    <div id="orderPreview">
+        <!-- כותרת התצוגה המקדימה שמתעדכנת אוטומטית עם שם המטייל/ת באמצעות פונקציית updateTitle() -->
+        <h3 id="previewTitle">הטיול של: </h3>
+
+        <!-- אזור תמונות החוויות: מוצגות בשקיפות חלקית (0.3 ב-CSS) ומודגשות לאטימות מלאה (1) בעת סימון הצ'ק-בוקס התואם -->
+        <div id="previewIcons">
+            <!-- תמונות מתיקיית images עם טקסט חלופי (alt) לנגישות -->
+            <img id="imgTrekking" src="images/trek&teva.png" alt="טרקים">
+            <img id="imgSea" src="images/yam.png" alt="ים">
+            <img id="imgCity" src="images/mikdash.png" alt="עיר">
+        </div>
+
+        <!-- אזור תמונת סגנון הטיול: ריק בטעינת הדף, ולתוכו ה-JavaScript מזריק את התמונה המתאימה בעת בחירת כפתור רדיו -->
+        <div id="tripImageArea"></div>
+    </div>
+
+    <!-- אזור חלון סיכום ההזמנה הקופץ: מוסתר כברירת מחדל (display: none ב-CSS), מתמלא בתוכן ומוצג במרכז המסך רק לאחר לחיצה על "שלח" -->
+    <div id="summaryArea"></div>
+
+</main>
+</body>
+</html>
+
