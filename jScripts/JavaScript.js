@@ -114,7 +114,8 @@ function toggleCheckboxVisual(checkboxId, imgId) {
 
 /* =========================================================================
    פונקציה 5: showTripSummary
-   תפקיד: אוספת את כל נתוני הטופס לאחר לחיצה על "שלח", מציגה את חלון הסיכום הקופץ ומעמעמת את הרקע.
+   תפקיד: אוספת את כל נתוני הטופס באמצעות מערכים ולולאות לאחר לחיצה על "שלח",
+          מציגה את חלון הסיכום הקופץ ומעמעמת את הרקע.
    ========================================================================= */
 function showTripSummary() {
     // שליפת הנתונים הסופיים שהוזנו בשלוש תיבות הטקסט והמספרים
@@ -122,28 +123,28 @@ function showTripSummary() {
     const finalPlace = document.getElementById('place').value;
     const finalBudget = document.getElementById('budget').value;
 
-    // בדיקה איזה מכפתורי הרדיו של סגנון הטיול מסומן, ושמירת שם הסגנון בעברית במשתנה finalStyle
+    // --- שינוי 1: בדיקת כפתורי הרדיו באמצעות מערכים מקבילים ולולאת for ---
+    const styleIds = ["backpack", "Balanced", "luxury"];
+    const styleNames = ["תרמילאים", "תקציב מאוזן", "יוקרה"];
     let finalStyle = "";
-    if (document.getElementById("backpack").checked) {
-        finalStyle = "תרמילאים";
-    } else if (document.getElementById("Balanced").checked) {
-        finalStyle = "תקציב מאוזן";
-    } else if (document.getElementById("luxury").checked) {
-        finalStyle = "יוקרה";
+
+    // מעבר בלולאה על כל מזהי כפתורי הרדיו ושמירת שם הסגנון שנבחר
+    for (let i = 0; i < styleIds.length; i++) {
+        if (document.getElementById(styleIds[i]).checked) {
+            finalStyle = styleNames[i];
+        }
     }
 
-    // איסוף החוויות שנבחרו בתיבות הסימון (Checkboxes) באמצעות שרשור מחרוזות
+    // --- שינוי 2: איסוף הצ'ק-בוקסים באמצעות מערכים מקבילים ולולאת for ---
+    const checkboxIds = ["trekking", "sea", "city"];
+    const checkboxNames = ["טרקים וטבע", "סטלבט בים", "סיורים בעיר ובמקדשים"];
     let addons = "";
 
-    // בדיקת כל צ'ק-בוקס בנפרד: אם הוא מסומן, מוסיפים (משרשרים עם +=) את שם החוויה בליווי פסיק ורווח
-    if (document.getElementById("trekking").checked) {
-        addons += "טרקים וטבע, ";
-    }
-    if (document.getElementById("sea").checked) {
-        addons += "סטלבט בים, ";
-    }
-    if (document.getElementById("city").checked) {
-        addons += "סיורים בעיר ובמקדשים, ";
+    // מעבר בלולאה על כל תיבות הסימון: כל תיבה שמסומנת (checked) משורשרת למשתנה addons
+    for (let i = 0; i < checkboxIds.length; i++) {
+        if (document.getElementById(checkboxIds[i]).checked) {
+            addons += checkboxNames[i] + ", ";
+        }
     }
 
     // עיצוב סופי של מחרוזת החוויות:
@@ -187,4 +188,3 @@ function updateTitle() {
     // עדכון תוכן הכותרת בחלון התצוגה המקדימה עם השם העדכני
     document.getElementById("previewTitle").innerHTML = "הטיול של: " + name;
 }
-
